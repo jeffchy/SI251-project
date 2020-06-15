@@ -27,21 +27,27 @@ class ActorCritic(nn.Module):
     def __init__(self, state_dim, action_dim, action_std):
         super(ActorCritic, self).__init__()
         # action mean range -1 to 1
+        # self.actor = nn.Sequential(
+        #     nn.Linear(state_dim, 64),
+        #     nn.Tanh(),
+        #     nn.Linear(64, 32),
+        #     nn.Tanh(),
+        #     nn.Linear(32, action_dim),
+        #     nn.Tanh()
+        # )
+
         self.actor = nn.Sequential(
-            nn.Linear(state_dim, 64),
+            nn.Linear(state_dim, 50),
             nn.Tanh(),
-            nn.Linear(64, 32),
-            nn.Tanh(),
-            nn.Linear(32, action_dim),
+            nn.Linear(50, action_dim),
             nn.Tanh()
         )
+
         # critic
         self.critic = nn.Sequential(
-            nn.Linear(state_dim, 64),
+            nn.Linear(state_dim, 50),
             nn.Tanh(),
-            nn.Linear(64, 32),
-            nn.Tanh(),
-            nn.Linear(32, 1)
+            nn.Linear(50, 1)
         )
         self.action_var = torch.full((action_dim,), action_std * action_std).to(device)
 
