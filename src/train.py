@@ -64,11 +64,14 @@ def L2O(args):
         # training loop
         for i_episode in range(1, max_episodes + 1):
 
-            n_done = 0
+
             problem.reset()
             state = problem.init_state
             t_done = 1000
             avg_length = 0
+            has_done = False
+            n_has_done = 0
+            n_done = 0
 
             for t in range(max_timesteps):
                 time_step += 1
@@ -92,20 +95,21 @@ def L2O(args):
                 running_reward += reward
 
                 if done:
-                    t_done = t
-                    n_done += 1
+                    has_done = True
 
-            if t_done < max_timesteps - 1:
-                avg_length += t_done
+            if done:
+                n_done += 1
+            if has_done:
+                n_has_done += 1
 
             last_rewards.append(reward)
 
             # logging
             if i_episode % log_interval == 0:
-                avg_length = int(avg_length / n_done)
                 done_rate = n_done / log_interval
+                has_done_rate = n_has_done / log_interval
                 running_reward = int((running_reward / log_interval))
-                print('Problem {}: {}\t Episode {} \t Avg length: {} \t Done rate: {} \t Avg reward: {}, Avg last reward: {}, Avg init reward: {}'.format(args.problem, i_problems, i_episode, avg_length, done_rate, running_reward, np.mean(last_rewards), np.mean(init_rewards) ))
+                print('Problem {}: {}\t Episode {} \t Done rate: {} \t HasDone rate: {} \t Avg reward: {}, Avg last reward: {}, Avg init reward: {}'.format(args.problem, i_problems, i_episode, done_rate, has_done_rate, running_reward, np.mean(last_rewards), np.mean(init_rewards) ))
                 running_reward = 0
                 avg_length = 0
                 init_rewards = []
