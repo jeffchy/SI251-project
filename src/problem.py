@@ -36,7 +36,7 @@ class LinearRegression():
         self.state_dim = (num_feature + 1) + H * 1 + (num_feature + 1) * H
         self.action_dim = (num_feature + 1)
         self.max_step = 100
-        self.end_obj = 0.3
+        self.end_obj = 0.34
         self.loss = robust_loss if robust else torch.nn.MSELoss()
         self.generate()
         self.reset()
@@ -110,7 +110,6 @@ class LinearRegression():
 
         self.x = x
         self.y = y
-
 
 
 class NNCE():

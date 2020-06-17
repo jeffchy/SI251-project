@@ -13,6 +13,7 @@ class Record():
 
     def update_obj(self, obj_val):
         self.delta_objs = torch.cat([torch.tensor([obj_val-self.objs[0]]).float(), self.delta_objs[: -1]])
+        # self.delta_objs = obj_val - self.objs
         self.objs = torch.cat([torch.tensor([obj_val]).float(), self.objs[: -1]])
 
     def update_grad(self, obj_grad):
